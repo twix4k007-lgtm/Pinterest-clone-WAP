@@ -1,17 +1,29 @@
-/* src/components/PinCard/PinCard.css */
+/* ==========================================================================
+   src/components/PinCard/PinCard.css
+   ==========================================================================
+   Controls the individual visual representation of a "Pin". 
+   Handles hover overlays, save buttons, nested typography, and author tags.
+   ========================================================================== */
+
 .pin-card {
   display: flex;
   flex-direction: column;
-  cursor: pointer;
+  cursor: zoom-in; /* Indicate to the user that pins can be inspected */
   position: relative;
+  /* Prevent ragged edges caused by fractional pixels during rendering */
+  transform: translateZ(0); 
 }
 
+/* --------------------------------------------------------------------------
+   Image Container & Core Hover Effects
+   -------------------------------------------------------------------------- */
 .pin-image-wrapper {
   border-radius: var(--radius-card);
   overflow: hidden;
   background-color: var(--hover-bg);
   position: relative;
-  transition: transform var(--transition-speed) ease;
+  transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
 .pin-image {
@@ -21,26 +33,167 @@
   object-fit: cover;
 }
 
+/* Bouncy scaling specifically restricted to the image container */
 .pin-card:hover .pin-image-wrapper {
-  transform: scale(1.02);
+  /* Using a slightly reduced scale compared to earlier to feel more heavy/premium */
+  transform: scale(1.015);
 }
 
-.pin-card:hover .pin-image-wrapper::after {
-  content: '';
+/* --------------------------------------------------------------------------
+   Interactive Overlay Surface
+   -------------------------------------------------------------------------- */
+.pin-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.1);
-  pointer-events: none;
+  background: rgba(0, 0, 0, 0); /* Invisible by default */
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  pointer-events: none; /* Let touches pass through when invisible */
+  border-radius: var(--radius-card);
+}
+
+.pin-card:hover .pin-overlay {
+  background: rgba(0, 0, 0, 0.4); /* Darken image to make buttons pop */
+  opacity: 1;
+  pointer-events: auto; /* Reactivate hits when visible */
+}
+
+/* --------------------------------------------------------------------------
+   Overlay Components (Save Button, Shared Links)
+   -------------------------------------------------------------------------- */
+.pin-save-btn {
+  align-self: flex-end;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 24px; /* Pill shape */
+  padding: 12px 20px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transform: translateY(-10px);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.pin-card:hover .pin-save-btn {
+  transform: translateY(0); /* Drop down into place */
+}
+
+.pin-save-btn:hover {
+  background-color: #ad081b; /* Darker red */
+}
+
+.pin-overlay-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  transform: translateY(10px);
+  transition: transform 0.2s ease;
+}
+
+.pin-card:hover .pin-overlay-footer {
+  transform: translateY(0); /* Rise up into place */
+}
+
+.pin-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.8);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 900;
+  color: var(--text-dark);
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.pin-action-btn:hover {
+  background-color: rgba(255,255,255,1);
+}
+
+/* --------------------------------------------------------------------------
+   Typography and Metadata Section (Below Image)
+   -------------------------------------------------------------------------- */
+.pin-details {
+  padding: 8px 4px 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .pin-title {
-  padding: 8px 4px 0 4px;
   font-size: 14px;
   font-weight: 600;
   color: var(--text-dark);
   text-align: left;
   line-height: 1.2;
+  /* Truncate aggressively to prevent breaking grid layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+.pin-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+/* Author Profile Component */
+.pin-author {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-dark);
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.pin-author-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #ddd;
+  background-image: url('https://ui-avatars.com/api/?background=random&color=fff&size=24');
+  background-size: cover;
+}
+
+.pin-author:hover span {
+  text-decoration: underline;
+}
+
+/* Likes and Comments Metrics */
+.pin-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.pin-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Accessibility Focus States */
+.pin-card:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+

@@ -1,58 +1,200 @@
-/* src/components/Feed/Feed.css */
+/* ==========================================================================
+   src/components/Feed/Feed.css
+   ==========================================================================
+   The Core Feed handles the CSS-column driven Masonry layout. It controls
+   how many columns appear at specific viewports, manages gap spacing,
+   and constructs the skeleton loading aesthetic.
+   ========================================================================== */
+
 .feed-container {
   flex: 1;
   padding: 24px;
   background-color: var(--bg-color);
   overflow-y: auto;
+  /* Smooth scrolling experience on touch devices */
+  -webkit-overflow-scrolling: touch; 
+  /* Prevent horizontal jarring when vertical scrollbar appears */
+  scrollbar-gutter: stable; 
+  position: relative;
+  min-height: 100vh;
 }
 
+/* --------------------------------------------------------------------------
+   Masonry Grid Core Logic (CSS Columns)
+   -------------------------------------------------------------------------- */
 .feed-masonry-grid {
+  /* Default viewport sizing max bounds */
+  column-count: 6; /* 6 columns on massive ultra-wide monitors */
+  column-gap: 16px;
+  max-width: 2000px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Force children to avoid splitting themselves across column breaks */
+.feed-masonry-grid .pin-card {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  /* The margin bottom replaces grid-row-gap in a column setup */
+  margin-bottom: 16px; 
+  /* Hint to browser for GPU acceleration during transformations */
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
+   Media Queries & Responsive Fluidity Rules
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 1800px) {
+  .feed-masonry-grid {
+    column-count: 5;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .feed-masonry-grid {
+    column-count: 4;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .feed-masonry-grid {
+    column-count: 3;
+    column-gap: 12px; /* Tighter gutters on smaller screens */
+  }
+  .feed-masonry-grid .pin-card {
+    margin-bottom: 12px;
+  }
+  .feed-container {
+    padding: 16px; /* Decrease side padding */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .feed-masonry-grid {
+    column-count: 2;
+    column-gap: 10px;
+  }
+  .feed-masonry-grid .pin-card {
+    margin-bottom: 10px;
+  }
+  .feed-container {
+    padding: 12px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .feed-masonry-grid {
+    column-count: 2; /* Keeping 2 columns on mobile actually looks more like pinterest */
+    column-gap: 8px;
+  }
+  .feed-masonry-grid .pin-card {
+    margin-bottom: 8px;
+  }
+  .feed-container {
+    padding: 8px;
+  }
+}
+
+/* Very narrow legacy devices */
+@media screen and (max-width: 320px) {
+  .feed-masonry-grid {
+    column-count: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Status Overlays (Loading, Errors, Empty Sets)
+   -------------------------------------------------------------------------- */
+.status-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; /* Fill visually dominant space */
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-dark);
+  text-align: center;
+  animation: fadeInState 0.4s ease-out forwards;
+}
+
+.status-state p {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 16px;
+  margin-top: 8px;
+  max-width: 400px;
+}
+
+.status-state.error {
+  color: var(--primary-color);
+}
+
+.status-state.empty {
+  /* Give empty states a softer, less aggressive visual priority */
+  opacity: 0.8;
+}
+
+/* --------------------------------------------------------------------------
+   Shimmer Loading Skeletons
+   Instead of just saying "Loading", a skeleton layout feels much faster
+   -------------------------------------------------------------------------- */
+.skeleton-grid {
   column-count: 5;
   column-gap: 16px;
   max-width: 1800px;
   margin: 0 auto;
 }
 
-@media (max-width: 1400px) {
-  .feed-masonry-grid {
-    column-count: 4;
-  }
-}
-
-@media (max-width: 1000px) {
-  .feed-masonry-grid {
-    column-count: 3;
-  }
-}
-
-@media (max-width: 768px) {
-  .feed-masonry-grid {
-    column-count: 2;
-  }
-}
-
-@media (max-width: 480px) {
-  .feed-masonry-grid {
-    column-count: 1;
-  }
-}
-
-.feed-masonry-grid .pin-card {
+.skeleton-card {
   break-inside: avoid;
   margin-bottom: 16px;
+  border-radius: var(--radius-card);
+  background: var(--hover-bg);
+  /* Generate random heights using child index specificity or inline styles */
+  height: 250px; 
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 
-/* Status States (Loading, Error, Empty) */
-.status-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--text-muted);
+/* The scanning highlight effect that travels across the skeleton */
+.skeleton-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: shimmer 1.5s infinite;
 }
 
-.status-state.error {
-  color: var(--primary-color);
+/* Specific heights to stagger the skeleton masonry effect */
+.skeleton-card:nth-child(2n) { height: 350px; }
+.skeleton-card:nth-child(3n) { height: 180px; }
+.skeleton-card:nth-child(4n) { height: 400px; }
+.skeleton-card:nth-child(5n) { height: 280px; }
+
+/* --------------------------------------------------------------------------
+   Keyframe Animations
+   -------------------------------------------------------------------------- */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fadeInState {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
