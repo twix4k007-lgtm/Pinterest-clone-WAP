@@ -1,0 +1,377 @@
+/* ==========================================================================
+   src/components/PinModal/PinModal.css
+   ========================================================================== 
+   Styling for the immersive full-screen modal viewing experience.
+   Contains layout splits for images vs data, custom scrolling regions,
+   and complex form input interaction states.
+   ========================================================================== */
+
+.pin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  animation: modalFadeIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.pin-modal-close-btn {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, background 0.2s ease;
+  z-index: 1010;
+}
+
+.pin-modal-close-btn:hover {
+  background: var(--hover-bg);
+  transform: scale(1.1);
+}
+
+.pin-modal-content {
+  display: flex;
+  background: var(--bg-color);
+  border-radius: 32px;
+  width: 100%;
+  max-width: 1024px;
+  height: calc(100vh - 80px); /* Fill most of the screen vertically */
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  transform: translateY(20px);
+  animation: modalSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Left side: The Image */
+.pin-modal-left {
+  flex: 1;
+  background-color: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.pin-modal-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Right side: The Meta Data */
+.pin-modal-right {
+  width: 450px;
+  min-width: 450px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-color);
+}
+
+.pin-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px 16px 32px;
+  position: sticky;
+  top: 0;
+  background: var(--bg-color);
+  z-index: 10;
+}
+
+.pin-modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: var(--hover-bg);
+}
+
+.save-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.save-btn:hover {
+  background: #ad081b;
+}
+
+.save-btn.saved {
+  background: #111;
+}
+
+/* Scrollable middle section for details and comments */
+.pin-modal-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 32px;
+}
+
+.pin-modal-scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+.pin-modal-scrollable::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 4px;
+}
+
+.pin-modal-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 16px 0 12px 0;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+.pin-modal-description {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-dark);
+  margin-bottom: 24px;
+}
+
+/* Author Section */
+.pin-modal-author {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.author-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.author-name {
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.author-followers {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.follow-btn {
+  background: #efefef;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.follow-btn:hover {
+  background: #e1e1e1;
+}
+
+/* Comments Section */
+.pin-modal-comments-section {
+  margin-top: 16px;
+  padding-bottom: 24px;
+}
+
+.comments-heading {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.no-comments {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comment-item {
+  display: flex;
+  gap: 12px;
+}
+
+.comment-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.comment-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-light);
+  padding: 10px 14px;
+  border-radius: 0 16px 16px 16px;
+  max-width: 90%;
+}
+
+.comment-author {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.comment-text {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Footer (Input and interactions) */
+.pin-modal-footer {
+  border-top: 1px solid #efefef;
+  padding: 16px 32px 24px 32px;
+  background: var(--bg-color);
+  z-index: 10;
+}
+
+.interaction-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.like-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+.like-btn.liked {
+  color: var(--primary-color);
+}
+
+.comment-input-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.current-user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 24px;
+  border: 1px solid #ddd;
+  background: transparent;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.comment-input:focus {
+  border-color: #999;
+}
+
+.post-comment-btn {
+  position: absolute;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   Animations & Breakpoints
+   -------------------------------------------------------------------------- */
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media screen and (max-width: 1024px) {
+  .pin-modal-content {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  .pin-modal-left, .pin-modal-right {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+  }
+  
+  .pin-modal-scrollable {
+    overflow-y: visible;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .pin-modal-overlay {
+    padding: 0;
+  }
+  
+  .pin-modal-content {
+    border-radius: 0;
+    height: 100vh;
+  }
+  
+  .pin-modal-close-btn {
+    top: 16px; left: 16px;
+    background: rgba(255,255,255,0.8);
+  }
+}

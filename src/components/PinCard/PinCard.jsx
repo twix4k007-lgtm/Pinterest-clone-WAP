@@ -1,9 +1,20 @@
 import React from 'react';
 import './PinCard.css';
 
-const PinCard = ({ image, title, author, likes, comments }) => {
+const PinCard = ({ image, title, author, likes, comments, onClick }) => {
   return (
-    <div className="pin-card" tabIndex="0" role="button">
+    <div 
+      className="pin-card" 
+      tabIndex="0" 
+      role="button" 
+      onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+    >
       <div className="pin-image-wrapper">
         <img src={image} alt={title} className="pin-image" loading="lazy" />
         {/* Hover overlay injected cleanly over the image */}
