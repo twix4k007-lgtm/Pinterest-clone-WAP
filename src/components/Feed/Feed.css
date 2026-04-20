@@ -222,3 +222,111 @@
   0% { transform: scale(0.8); opacity: 0.5; }
   100% { transform: scale(1.2); opacity: 1; }
 }
+
+/* --------------------------------------------------------------------------
+   Search Mode: label displayed above results
+   -------------------------------------------------------------------------- */
+.feed-search-label {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  padding: 0 4px;
+  animation: fadeInState 0.3s ease-out;
+}
+
+.feed-search-label em {
+  font-style: italic;
+  color: var(--text-dark);
+}
+
+.feed-search-label strong {
+  color: var(--text-dark);
+}
+
+/* --------------------------------------------------------------------------
+   Search Results Transition (smooth grid appearance)
+   -------------------------------------------------------------------------- */
+.feed-results-enter {
+  animation: feedResultsIn 0.35s ease-out forwards;
+}
+
+@keyframes feedResultsIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   "No Results" State – extended empty state with suggestions
+   -------------------------------------------------------------------------- */
+.no-results {
+  gap: 16px;
+}
+
+.status-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+  display: block;
+  animation: bounceIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes bounceIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* Container for keyword suggestion chips */
+.no-results-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+/* Clickable suggestion pills shown on zero-results state */
+.suggestion-chip {
+  background-color: var(--hover-bg);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.suggestion-chip:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   Retry Button (used on error states)
+   -------------------------------------------------------------------------- */
+.retry-btn {
+  margin-top: 16px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.retry-btn:hover {
+  background-color: #ad081b;
+  transform: translateY(-2px);
+}

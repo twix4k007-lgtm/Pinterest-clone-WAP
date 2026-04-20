@@ -79,7 +79,7 @@
   font-size: 15px;
   cursor: pointer;
   transform: translateY(-10px);
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pin-card:hover .pin-save-btn {
@@ -88,6 +88,15 @@
 
 .pin-save-btn:hover {
   background-color: #ad081b; /* Darker red */
+}
+
+/* Saved state – changes to dark/confirmed look */
+.pin-save-btn--saved {
+  background-color: #111111;
+}
+
+.pin-save-btn--saved:hover {
+  background-color: #333333;
 }
 
 .pin-overlay-footer {
@@ -143,6 +152,33 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* --------------------------------------------------------------------------
+   Tag Chips (shown below the title when pin has tags)
+   -------------------------------------------------------------------------- */
+.pin-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.pin-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background-color: var(--hover-bg);
+  border-radius: 4px;
+  padding: 2px 6px;
+  white-space: nowrap;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.pin-tag:hover {
+  color: var(--primary-color);
+  background-color: rgba(230, 0, 35, 0.08);
+}
+
 
 .pin-meta {
   display: flex;

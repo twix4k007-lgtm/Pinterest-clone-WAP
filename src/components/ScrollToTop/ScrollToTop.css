@@ -1,0 +1,68 @@
+/* ==========================================================================
+   src/components/ScrollToTop/ScrollToTop.css
+   ==========================================================================
+   Floating action button fixed in the bottom-right corner.
+   Appears with a fade + slide animation and has a subtle hover lift.
+   ========================================================================== */
+
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  z-index: 300; /* Above the modal backdrop if any */
+
+  /* Entry animation – slides up from 16px below final position */
+  animation: scrollBtnAppear 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+
+  box-shadow: 0 4px 16px rgba(230, 0, 35, 0.35);
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.scroll-to-top-btn:hover {
+  background-color: #ad081b;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(230, 0, 35, 0.45);
+}
+
+.scroll-to-top-btn:active {
+  transform: translateY(0);
+}
+
+@keyframes scrollBtnAppear {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive: smaller button on mobile */
+@media (max-width: 480px) {
+  .scroll-to-top-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    bottom: 20px;
+    right: 16px;
+  }
+}
