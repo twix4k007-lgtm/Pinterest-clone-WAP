@@ -1,0 +1,35 @@
+/* src/components/Feed/Feed.css */
+.feed-container {
+  flex: 1;
+  padding: 20px;
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+.feed-masonry-grid {
+  /* Basic CSS column layout for a masonry-like look */
+  column-count: 4;
+  column-gap: 20px;
+}
+
+@media (max-width: 1200px) {
+  .feed-masonry-grid {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 900px) {
+  .feed-masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .feed-masonry-grid {
+    column-count: 1;
+  }
+}
+
+.feed-masonry-grid .pin-card {
+  break-inside: avoid;
+}
