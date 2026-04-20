@@ -2,26 +2,45 @@
 .pin-card {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
   cursor: pointer;
+  position: relative;
 }
 
 .pin-image-wrapper {
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   overflow: hidden;
-  background-color: #eee;
+  background-color: var(--hover-bg);
+  position: relative;
+  transition: transform var(--transition-speed) ease;
 }
 
 .pin-image {
   width: 100%;
+  height: auto;
   display: block;
   object-fit: cover;
 }
 
+.pin-card:hover .pin-image-wrapper {
+  transform: scale(1.02);
+}
+
+.pin-card:hover .pin-image-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
 .pin-title {
-  padding: 8px 4px;
+  padding: 8px 4px 0 4px;
   font-size: 14px;
-  font-weight: 500;
-  color: #111;
+  font-weight: 600;
+  color: var(--text-dark);
   text-align: left;
+  line-height: 1.2;
 }
